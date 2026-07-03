@@ -7,6 +7,7 @@ export default function Upgrade() {
   const [billing, setBilling] = useState('monthly')
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState('')
+  const price = billing === 'monthly' ? 10000 : 100000
 
   const saving = billing === 'yearly' ? '₦20,000 saved' : null
 
