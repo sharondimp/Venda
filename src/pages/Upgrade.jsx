@@ -7,20 +7,37 @@ export default function Upgrade() {
   const [billing, setBilling] = useState('monthly')
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState('')
-  const price = billing === 'monthly' ? 10000 : 100000
 
+  const price = billing === 'monthly' ? 10000 : 100000
   const saving = billing === 'yearly' ? '₦20,000 saved' : null
 
-  const showToast = (msg) => {
-    setToast(msg)
-    setTimeout(() => setToast(''), 3000)
-  }
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3000) }
 
   const handleUpgrade = async () => {
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1500))
-    showToast('Paystack payment coming soon!')
-    setLoading(false)
+    try {
+      const PaystackPop = window.PaystackPop
+      if (!PaystackPop) {
+        showToast('Payment system loading, please try again')
+        setLoading(false)
+        return
+      }
+      const handler = PaystackPop.setup({
+        key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+        email: user?.email,
+        amount: price * 100,
+        currency: 'NGN',
+        callback: (response) => {
+          showToast('Payment successful! Your account will be upgraded shortly.')
+          setLoading(false)
+        },
+        onClose: () => setLoading(false),
+      })
+      handler.openIframe()
+    } catch (err) {
+      showToast('Something went wrong. Please try again.')
+      setLoading(false)
+    }
   }
 
   const features = [
@@ -30,17 +47,15 @@ export default function Upgrade() {
     { icon: '🏷️', text: 'Promo & discount codes' },
     { icon: '🚚', text: 'Venda-assisted delivery for physical orders' },
     { icon: '⭐', text: 'Premium seller badge on your store' },
+    { icon: '🔍', text: 'Priority in marketplace search results' },
     { icon: '💬', text: 'Priority support' },
+    { icon: '⭐', text: '50% off Featured Product ads (₦500 instead of ₦1,000)' },
   ]
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg2)' }}>
       <Navbar variant="dashboard" />
-      {toast && (
-        <div className="toast success" style={{ bottom: '1.5rem', right: '1.5rem' }}>
-          ✅ {toast}
-        </div>
-      )}
+      {toast && <div className="toast success">{toast}</div>}
       <div style={{ paddingTop: '64px', padding: '5rem 5% 3rem' }}>
         <div style={{ maxWidth: '560px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>

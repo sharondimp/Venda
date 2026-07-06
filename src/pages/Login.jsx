@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import Navbar from '../components/Navbar'
 
@@ -9,13 +9,15 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [resetting, setResetting] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
+    setError(''); setSuccess('')
     if (!email || !password) return setError('Please fill in all fields')
     setLoading(true)
     try {
@@ -44,6 +46,24 @@ export default function Login() {
     }
   }
 
+  const handleForgotPassword = async () => {
+    setError(''); setSuccess('')
+    if (!email) return setError('Please enter your email address first')
+    setResetting(true)
+    try {
+      await sendPasswordResetEmail(auth, email)
+      setSuccess('Password reset email sent! Check your inbox.')
+    } catch (err) {
+      if (err.code === 'auth/user-not-found') {
+        setError('No account found with this email')
+      } else {
+        setError('Failed to send reset email. Try again.')
+      }
+    } finally {
+      setResetting(false)
+    }
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg2)', display: 'flex', flexDirection: 'column' }}>
       <Navbar variant="public" />
@@ -56,6 +76,7 @@ export default function Login() {
 
           <div className="card" style={{ padding: '2rem' }}>
             {error && <div style={{ background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.2)', borderRadius: '8px', padding: '0.7rem 1rem', marginBottom: '1.2rem', color: 'var(--danger)', fontSize: '0.85rem' }}>{error}</div>}
+            {success && <div style={{ background: 'var(--green-soft)', border: '1px solid rgba(0,168,120,0.2)', borderRadius: '8px', padding: '0.7rem 1rem', marginBottom: '1.2rem', color: 'var(--green)', fontSize: '0.85rem' }}>{success}</div>}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -72,14 +93,10 @@ export default function Login() {
                 </div>
               </div>
               <div style={{ textAlign: 'right', marginBottom: '1.2rem' }}>
-                <a href="#" onClick={async (e) => {
-  e.preventDefault()
-  if (!email) return setError('Enter your email first')
-  const { sendPasswordResetEmail } = await import('firebase/auth')
-  await sendPasswordResetEmail(auth, email)
-  setError('')
-  alert('Password reset email sent! Check your inbox.')
-}}>Forgot password?</a>
+                <button type="button" onClick={handleForgotPassword} disabled={resetting} style={{ fontSize: '0.82rem', color: 'var(--green)', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>
+                  {resetting ? 'Sending...' : 'Forgot password?'}
+                </button>
+              </div>
               <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem' }} disabled={loading}>
                 {loading ? 'Logging in...' : 'Log In'}
               </button>
