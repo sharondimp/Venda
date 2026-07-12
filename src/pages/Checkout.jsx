@@ -13,7 +13,6 @@ export default function Checkout() {
   const [paying, setPaying] = useState(false)
   const [success, setSuccess] = useState(false)
   const [orderId, setOrderId] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', city: '', note: '' })
   const [error, setError] = useState('')
 
@@ -24,7 +23,6 @@ export default function Checkout() {
         if (!productSnap.exists()) return
         const productData = { id: productSnap.id, ...productSnap.data() }
         setProduct(productData)
-
         const sellerSnap = await getDoc(doc(db, 'sellers', productData.sellerId))
         if (sellerSnap.exists()) setSeller({ id: sellerSnap.id, ...sellerSnap.data() })
       } catch (err) {
@@ -38,7 +36,8 @@ export default function Checkout() {
 
   const update = (f, v) => setForm(p => ({ ...p, [f]: v }))
 
-  const deliveryFee = product?.type === 'physical' ? 2000 : 0
+  // Use seller's delivery price if set, otherwise default 2000
+  const deliveryFee = product?.type === 'physical' ? (seller?.deliveryPrice || 2000) : 0
   const total = (product?.price || 0) + deliveryFee
 
   const handlePay = () => {
@@ -46,77 +45,82 @@ export default function Checkout() {
     if (!form.name || !form.email) return setError('Name and email are required')
     if (product?.type === 'physical' && (!form.phone || !form.address)) return setError('Phone and delivery address are required')
 
-    setPaying(true)
-
     const PaystackPop = window.PaystackPop
-    const handler = PaystackPop.setup({
-      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
-      email: form.email,
-      amount: total * 100, // Paystack uses kobo
-      currency: 'NGN',
-      callback: async (response) => {
-        try {
-          const newOrderId = `VDA-${Date.now().toString().slice(-6)}`
-          setOrderId(newOrderId)
+    if (!PaystackPop) return setError('Payment system not ready. Please refresh and try again.')
 
-          // Save order to Firestore
-          await addDoc(collection(db, 'orders'), {
-            orderId: newOrderId,
-            productId: product.id,
-            productName: product.name,
-            sellerId: seller.id,
-            sellerName: seller.fullName,
-            sellerEmail: seller.email,
-            buyerName: form.name,
-            buyerEmail: form.email,
-            buyerPhone: form.phone || null,
-            deliveryAddress: form.address ? `${form.address}, ${form.city}` : null,
-            note: form.note || null,
-            amount: product.price,
-            type: product.type,
-            status: 'pending',
-            paystackRef: response.reference,
-            createdAt: serverTimestamp(),
-          })
-
-          // Send emails
-          await sendOrderConfirmation({
-            buyerName: form.name,
-            buyerEmail: form.email,
-            buyerPhone: form.phone,
-            productName: product.name,
-            amount: product.price,
-            orderId: newOrderId,
-            isDigital: product.type === 'digital',
-            downloadLink: product.downloadUrl || '',
-          })
-
-          await sendNewOrderToSeller({
-            sellerName: seller.fullName,
-            sellerEmail: seller.email,
-            buyerEmail: form.email,
-            buyerPhone: form.phone,
-            productName: product.name,
-            amount: product.price,
-            orderId: newOrderId,
-            isDigital: product.type === 'digital',
-            deliveryAddress: form.address ? `${form.address}, ${form.city}` : null,
-          })
-
-          setSuccess(true)
-        } catch (err) {
-          console.error(err)
-          setError('Payment received but order failed to save. Contact support.')
-        } finally {
-          setPaying(false)
-        }
-      },
-      onClose: () => setPaying(false),
-    })
-    handler.openIframe()
+    setPaying(true)
+    try {
+      const handler = PaystackPop.setup({
+        key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+        email: form.email,
+        amount: total * 100,
+        currency: 'NGN',
+        callback: async (response) => {
+          try {
+            const newOrderId = `VDA-${Date.now().toString().slice(-6)}`
+            setOrderId(newOrderId)
+            await addDoc(collection(db, 'orders'), {
+              orderId: newOrderId,
+              productId: product.id,
+              productName: product.name,
+              sellerId: seller.id,
+              sellerName: seller.fullName,
+              sellerEmail: seller.email,
+              buyerName: form.name,
+              buyerEmail: form.email,
+              buyerPhone: form.phone || null,
+              deliveryAddress: form.address ? `${form.address}, ${form.city}` : null,
+              note: form.note || null,
+              amount: product.price,
+              deliveryFee,
+              type: product.type,
+              status: 'pending',
+              paystackRef: response.reference,
+              createdAt: serverTimestamp(),
+            })
+            await sendOrderConfirmation({
+              buyerName: form.name,
+              buyerEmail: form.email,
+              buyerPhone: form.phone,
+              productName: product.name,
+              amount: product.price,
+              orderId: newOrderId,
+              isDigital: product.type === 'digital',
+              downloadLink: product.downloadUrl || '',
+            })
+            await sendNewOrderToSeller({
+              sellerName: seller.fullName,
+              sellerEmail: seller.email,
+              buyerEmail: form.email,
+              buyerPhone: form.phone,
+              productName: product.name,
+              amount: product.price,
+              orderId: newOrderId,
+              isDigital: product.type === 'digital',
+              deliveryAddress: form.address ? `${form.address}, ${form.city}` : null,
+            })
+            setSuccess(true)
+          } catch (err) {
+            console.error(err)
+            setError('Payment received but order failed to save. Contact support.')
+          } finally {
+            setPaying(false)
+          }
+        },
+        onClose: () => setPaying(false),
+      })
+      handler.openIframe()
+    } catch (err) {
+      setError('Payment failed to open. Please refresh and try again.')
+      setPaying(false)
+    }
   }
 
-  if (loading) return <div className="page-loader"><div className="spinner" /></div>
+  if (loading) return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
+      Loading product...
+    </div>
+  )
 
   if (!product) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
@@ -144,9 +148,6 @@ export default function Checkout() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg2)' }}>
-      {/* Add Paystack script */}
-      <script src="https://js.paystack.co/v1/inline.js" />
-
       <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--border)', padding: '1rem 5%' }}>
         <Link to={`/store/${storeSlug}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem', color: 'var(--text)', textDecoration: 'none' }}>
           Ven<span style={{ color: 'var(--green)' }}>da</span>
@@ -154,10 +155,8 @@ export default function Checkout() {
       </div>
 
       <div style={{ padding: '2.5rem 5%', display: 'grid', gridTemplateColumns: '1fr 320px', gap: '1.5rem', maxWidth: '860px', margin: '0 auto' }}>
-        {/* Form */}
         <div>
           <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.5rem' }}>Complete your order</div>
-
           {error && <div style={{ background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.2)', borderRadius: '8px', padding: '0.7rem 1rem', marginBottom: '1rem', color: 'var(--danger)', fontSize: '0.85rem' }}>{error}</div>}
 
           <div className="card" style={{ padding: '1.5rem', marginBottom: '1rem' }}>
@@ -180,7 +179,7 @@ export default function Checkout() {
           </div>
 
           {product.type === 'physical' && (
-            <div className="card" style={{ padding: '1.5rem', marginBottom: '1rem' }}>
+            <div className="card" style={{ padding: '1.5rem' }}>
               <div style={{ fontWeight: 700, marginBottom: '1rem', fontSize: '0.9rem' }}>Delivery Details</div>
               <div className="form-group">
                 <label className="form-label">Delivery Address *</label>
@@ -236,12 +235,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 640px) {
-          div[style*="gridTemplateColumns: '1fr 320px'"] { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      <style>{`@media (max-width: 640px) { div[style*="320px"] { grid-template-columns: 1fr !important; } }`}</style>
     </div>
   )
 }
