@@ -4,20 +4,6 @@ import { db } from '../firebase'
 import { collection, query, where, getDocs, addDoc, serverTimestamp } from 'firebase/firestore'
 import Navbar from '../components/Navbar'
 
-const loadPaystack = () => new Promise((resolve) => {
-  if (window.PaystackPop) return resolve(window.PaystackPop)
-  const existing = document.querySelector('script[src*="paystack"]')
-  if (existing) {
-    existing.onload = () => resolve(window.PaystackPop)
-    return
-  }
-  const script = document.createElement('script')
-  script.src = 'https://js.paystack.co/v1/inline.js'
-  script.onload = () => resolve(window.PaystackPop)
-  script.onerror = () => resolve(null)
-  document.head.appendChild(script)
-})
-
 export default function SponsoredAd() {
   const { user } = useAuth()
   const isPremium = user?.plan === 'premium'
@@ -36,8 +22,6 @@ export default function SponsoredAd() {
 
   useEffect(() => {
     if (!user?.uid) return
-    // Preload Paystack script
-    loadPaystack()
     const fetchData = async () => {
       try {
         const pQ = query(collection(db, 'products'), where('sellerId', '==', user.uid))
@@ -66,64 +50,62 @@ export default function SponsoredAd() {
     }
   }
 
-  const handlePay = async () => {
+  const handlePay = () => {
     setError('')
     if (!form.productId) return setError('Please select a product')
     if (!form.date) return setError('Please select a date')
     if (slotsInfo.date === form.date && slotsInfo.available <= 0) return setError('No slots available for this date.')
 
     setPaying(true)
-    const PaystackPop = await loadPaystack()
-    if (!PaystackPop) {
-      setError('Payment failed to load. Please refresh and try again.')
-      setPaying(false)
-      return
-    }
 
-    try {
-      const handler = PaystackPop.setup({
-        key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
-        email: user.email,
-        amount: price * 100,
-        currency: 'NGN',
-        callback: async (response) => {
-          try {
-            const product = products.find(p => p.id === form.productId)
-            await addDoc(collection(db, 'sponsoredAds'), {
-              sellerId: user.uid,
-              sellerName: user.fullName,
-              sellerEmail: user.email,
-              storeName: user.storeName,
-              storeSlug: user.storeSlug,
-              productId: form.productId,
-              productName: product?.name,
-              productImage: product?.imageUrl || '',
-              productPrice: product?.price,
-              date: form.date,
-              note: form.note || '',
-              amount: price,
-              status: 'pending',
-              paystackRef: response.reference,
-              createdAt: serverTimestamp(),
-            })
-            showToast("Submitted! We'll review and approve within a few hours 🎉")
-            setForm({ productId: '', date: '', note: '' })
-            const sQ = query(collection(db, 'sponsoredAds'), where('sellerId', '==', user.uid))
-            const sSnap = await getDocs(sQ)
-            setSubmissions(sSnap.docs.map(d => ({ id: d.id, ...d.data() })))
-          } catch (err) {
-            setError('Payment received but submission failed. Contact support.')
-          } finally {
-            setPaying(false)
-          }
-        },
-        onClose: () => setPaying(false),
-      })
-      handler.openIframe()
-    } catch (err) {
-      setError('Payment failed. Please try again.')
-      setPaying(false)
-    }
+    // Small delay to ensure Paystack is ready
+    setTimeout(() => {
+      try {
+        const handler = window.PaystackPop.setup({
+          key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+          email: user.email,
+          amount: price * 100,
+          currency: 'NGN',
+          callback: async (response) => {
+            try {
+              const product = products.find(p => p.id === form.productId)
+              await addDoc(collection(db, 'sponsoredAds'), {
+                sellerId: user.uid,
+                sellerName: user.fullName,
+                sellerEmail: user.email,
+                storeName: user.storeName,
+                storeSlug: user.storeSlug,
+                productId: form.productId,
+                productName: product?.name,
+                productImage: product?.imageUrl || '',
+                productPrice: product?.price,
+                date: form.date,
+                note: form.note || '',
+                amount: price,
+                status: 'pending',
+                paystackRef: response.reference,
+                createdAt: serverTimestamp(),
+              })
+              showToast("Submitted! We'll review and approve within a few hours 🎉")
+              setForm({ productId: '', date: '', note: '' })
+              const sQ = query(collection(db, 'sponsoredAds'), where('sellerId', '==', user.uid))
+              const sSnap = await getDocs(sQ)
+              setSubmissions(sSnap.docs.map(d => ({ id: d.id, ...d.data() })))
+            } catch (err) {
+              setError('Payment received but submission failed. Contact support.')
+            } finally {
+              setPaying(false)
+            }
+          },
+          onClose: () => setPaying(false),
+        })
+        handler.openIframe()
+      } catch (err) {
+        console.error('Paystack error:', err)
+        setError('Payment failed. Please try again.')
+        setPaying(false)
+      }
+    }, 300)
   }
 
   const today = new Date().toISOString().split('T')[0]
