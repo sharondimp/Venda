@@ -15,6 +15,7 @@ import AdminSellers from './pages/AdminSellers'
 import Marketplace from './pages/Marketplace'
 import SponsoredAd from './pages/SponsoredAd'
 import Dispute from './pages/Dispute'
+import StoreSettings from './pages/StoreSettings'
 
 function ProtectedRoute({ children, adminOnly }) {
   const { user, loading } = useAuth()
@@ -41,12 +42,13 @@ function AppRoutes() {
       <Route path="/marketplace" element={<Marketplace />} />
       <Route path="/store/:storeSlug" element={<Store />} />
       <Route path="/checkout/:storeSlug/:productId" element={<Checkout />} />
+      <Route path="/dispute" element={<Dispute />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/dashboard/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
       <Route path="/dashboard/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
       <Route path="/dashboard/upgrade" element={<ProtectedRoute><Upgrade /></ProtectedRoute>} />
       <Route path="/dashboard/sponsored" element={<ProtectedRoute><SponsoredAd /></ProtectedRoute>} />
-      <Route path="/dispute" element={<Dispute />} />
+      <Route path="/dashboard/settings" element={<ProtectedRoute><StoreSettings /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute adminOnly><Admin /></ProtectedRoute>} />
       <Route path="/admin/sellers" element={<ProtectedRoute adminOnly><AdminSellers /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
