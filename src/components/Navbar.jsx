@@ -36,6 +36,7 @@ export default function Navbar({ variant = 'public' }) {
             <Link to="/dashboard" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Overview</Link>
             <Link to="/dashboard/products" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Products</Link>
             <Link to="/dashboard/orders" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Orders</Link>
+            <Link to="/dashboard/settings" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Settings</Link>
           </>}
           {variant === 'admin' && <>
             <Link to="/admin" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Overview</Link>
@@ -83,6 +84,7 @@ export default function Navbar({ variant = 'public' }) {
             <Link to="/dashboard" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>Overview</Link>
             <Link to="/dashboard/products" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>Products</Link>
             <Link to="/dashboard/orders" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>Orders</Link>
+            <Link to="/dashboard/settings" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>⚙️ Settings</Link>
             <Link to="/dashboard/upgrade" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--green)', fontWeight: 600, textDecoration: 'none' }}>⚡ Upgrade</Link>
           </>}
           {variant === 'admin' && <>
