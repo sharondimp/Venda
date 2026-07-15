@@ -151,7 +151,7 @@ export default function Checkout() {
     <div style={{ minHeight: '100vh', background: 'var(--bg2)' }}>
       <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--border)', padding: '1rem 5%' }}>
         <Link to={`/store/${storeSlug}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem', color: 'var(--text)', textDecoration: 'none' }}>
-          Ven<span style={{ color: 'var(--green)' }}>da</span>
+          Ven<span style={{ color: 'var(--blue)' }}>da</span>
         </Link>
       </div>
 
@@ -194,7 +194,7 @@ export default function Checkout() {
                     ))}
                   </select>
                   {form.deliveryZone && (
-                    <span className="form-hint" style={{ color: 'var(--green)' }}>Delivery fee: ₦{selectedZone?.price?.toLocaleString()}</span>
+                    <span className="form-hint" style={{ color: 'var(--blue)' }}>Delivery fee: ₦{selectedZone?.price?.toLocaleString()}</span>
                   )}
                 </div>
               )}
@@ -230,7 +230,7 @@ export default function Checkout() {
               <div>
                 <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.2rem' }}>{product.name}</div>
                 <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>from {seller?.storeName}</div>
-                <span style={{ fontSize: '0.68rem', fontWeight: 600, padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--green-soft)', color: 'var(--green)', border: '1px solid rgba(0,168,120,0.2)', marginTop: '0.3rem', display: 'inline-block' }}>{product.type}</span>
+                <span style={{ fontSize: '0.68rem', fontWeight: 600, padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'rgba(26,47,212,0.08)', color: 'var(--blue)', border: '1px solid rgba(0,168,120,0.2)', marginTop: '0.3rem', display: 'inline-block' }}>{product.type}</span>
               </div>
             </div>
             {[
@@ -244,7 +244,7 @@ export default function Checkout() {
             ))}
             <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.1rem', paddingTop: '0.75rem', borderTop: '1px solid var(--border)', marginTop: '0.5rem', marginBottom: '1.2rem' }}>
               <span>Total</span>
-              <span style={{ color: 'var(--green)' }}>₦{total.toLocaleString()}</span>
+              <span style={{ color: 'var(--blue)' }}>₦{total.toLocaleString()}</span>
             </div>
             <button onClick={handlePay} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem' }} disabled={paying}>
               {paying ? 'Processing...' : `Pay ₦${total.toLocaleString()} via Paystack`}

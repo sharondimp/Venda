@@ -59,7 +59,7 @@ export default function Dispute() {
     <div style={{ minHeight: '100vh', background: 'var(--bg2)' }}>
       <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--border)', padding: '1rem 5%' }}>
         <Link to="/" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.2rem', color: 'var(--text)', textDecoration: 'none' }}>
-          Ven<span style={{ color: 'var(--green)' }}>da</span>
+          Ven<span style={{ color: 'var(--blue)' }}>da</span>
         </Link>
       </div>
 
@@ -108,7 +108,7 @@ export default function Dispute() {
             <label className="form-label">Photo of item received *</label>
             <div style={{ border: '2px dashed var(--border)', borderRadius: '10px', padding: '1.5rem', textAlign: 'center', cursor: 'pointer', background: 'var(--bg2)' }} onClick={() => document.getElementById('dispute-photo').click()}>
               {form.photo ? (
-                <div style={{ color: 'var(--green)', fontWeight: 600, fontSize: '0.9rem' }}>✓ {form.photo.name}</div>
+                <div style={{ color: 'var(--blue)', fontWeight: 600, fontSize: '0.9rem' }}>✓ {form.photo.name}</div>
               ) : (
                 <>
                   <div style={{ fontSize: '1.8rem', marginBottom: '0.4rem' }}>📸</div>

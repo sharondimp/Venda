@@ -152,7 +152,7 @@ export default function StoreSettings() {
         <div className="card" style={{ padding: '1.8rem', marginBottom: '1.5rem' }}>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, marginBottom: '1.2rem' }}>Store Logo</div>
           <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div style={{ width: '90px', height: '90px', borderRadius: '18px', overflow: 'hidden', border: '2px solid var(--border)', background: 'var(--bg3)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--green)' }}>
+            <div style={{ width: '90px', height: '90px', borderRadius: '18px', overflow: 'hidden', border: '2px solid var(--border)', background: 'var(--bg3)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--blue)' }}>
               {logoPreview || storeInfo.logoUrl ? (
                 <img src={logoPreview || storeInfo.logoUrl} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
@@ -221,7 +221,7 @@ export default function StoreSettings() {
                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 1rem', background: 'var(--bg2)', borderRadius: '8px', border: '1px solid var(--border)' }}>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{z.location}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--green)', fontWeight: 700 }}>₦{z.price?.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 700 }}>₦{z.price?.toLocaleString()}</div>
                   </div>
                   <button onClick={() => removeZone(i)} style={{ background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.2)', color: 'var(--danger)', borderRadius: '6px', padding: '0.3rem 0.6rem', cursor: 'pointer', fontSize: '0.8rem' }}>Remove</button>
                 </div>

@@ -120,7 +120,7 @@ export default function SponsoredAd() {
           <p style={{ color: 'var(--muted)', fontSize: '0.875rem' }}>Put your product at the top of the marketplace for 24 hours</p>
         </div>
 
-        <div className="card" style={{ marginBottom: '2rem', background: 'var(--green-soft)', border: '1px solid rgba(0,168,120,0.2)' }}>
+        <div className="card" style={{ marginBottom: '2rem', background: 'rgba(26,47,212,0.08)', border: '1px solid rgba(0,168,120,0.2)' }}>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, marginBottom: '0.75rem' }}>How it works</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
             {[['1️⃣','Pick a product and date'],['2️⃣',`Pay ₦${price.toLocaleString()}${isPremium ? ' (50% off!)' : ''}`],['3️⃣','We review and approve'],['4️⃣','Your product is featured for 24hrs']].map(([n,t]) => (
@@ -151,7 +151,7 @@ export default function SponsoredAd() {
               <label className="form-label">Featured Date</label>
               <input type="date" min={today} value={form.date} onChange={e => { setForm(f => ({ ...f, date: e.target.value })); checkSlots(e.target.value) }} />
               {slotsInfo.date === form.date && (
-                <span style={{ fontSize: '0.78rem', color: slotsInfo.available <= 0 ? 'var(--danger)' : 'var(--green)', marginTop: '0.3rem', display: 'block' }}>
+                <span style={{ fontSize: '0.78rem', color: slotsInfo.available <= 0 ? 'var(--danger)' : 'var(--blue)', marginTop: '0.3rem', display: 'block' }}>
                   {slotsInfo.available <= 0 ? '❌ No slots left for this date' : `✅ ${slotsInfo.available} slot${slotsInfo.available !== 1 ? 's' : ''} available`}
                 </span>
               )}
@@ -165,7 +165,7 @@ export default function SponsoredAd() {
             <button onClick={handlePay} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '0.8rem' }} disabled={paying || products.length === 0}>
               {paying ? 'Opening payment...' : `Pay ₦${price.toLocaleString()} via Paystack`}
             </button>
-            {isPremium && <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--green)', marginTop: '0.5rem', fontWeight: 600 }}>🎉 50% Premium discount applied!</p>}
+            {isPremium && <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--blue)', marginTop: '0.5rem', fontWeight: 600 }}>🎉 50% Premium discount applied!</p>}
           </div>
 
           <div className="card" style={{ padding: '1.5rem' }}>
@@ -180,7 +180,7 @@ export default function SponsoredAd() {
                   <div key={s.id} style={{ padding: '0.75rem', background: 'var(--bg2)', borderRadius: '8px', border: '1px solid var(--border)' }}>
                     <div style={{ fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.2rem' }}>{s.productName}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: '0.4rem' }}>📅 {s.date}</div>
-                    <span className={`badge ${s.status === 'approved' ? 'badge-green' : s.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{s.status}</span>
+                    <span className={`badge ${s.status === 'approved' ? 'badge-teal' : s.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{s.status}</span>
                   </div>
                 ))}
               </div>

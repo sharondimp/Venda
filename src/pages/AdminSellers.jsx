@@ -57,7 +57,7 @@ export default function AdminSellers() {
         await emailjs.send(
           import.meta.env.VITE_EMAILJS_SERVICE_ID,
           import.meta.env.VITE_EMAILJS_NEW_ORDER_TEMPLATE,
-          { seller_name: seller.fullName, seller_email: seller.email, product_name: emailForm.subject, amount: '', order_id: '', buyer_email: 'vendateamapp@gmail.com', buyer_phone: '', is_digital: '', is_physical: '', delivery_address: emailForm.body },
+          { seller_name: seller.fullName, seller_email: seller.email, product_name: emailForm.subject, amount: '', order_id: '', buyer_email: 'dimpateamapp@gmail.com', buyer_phone: '', is_digital: '', is_physical: '', delivery_address: emailForm.body },
           import.meta.env.VITE_EMAILJS_PUBLIC_KEY
         )
       }
@@ -88,7 +88,7 @@ export default function AdminSellers() {
 
         <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
           {['all', 'pending', 'approved', 'rejected'].map(f => (
-            <button key={f} onClick={() => setFilter(f)} style={{ padding: '0.4rem 0.9rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 600, border: '1.5px solid', borderColor: filter === f ? 'var(--green)' : 'var(--border)', background: filter === f ? 'var(--green-soft)' : 'transparent', color: filter === f ? 'var(--green)' : 'var(--muted)', cursor: 'pointer', textTransform: 'capitalize' }}>
+            <button key={f} onClick={() => setFilter(f)} style={{ padding: '0.4rem 0.9rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 600, border: '1.5px solid', borderColor: filter === f ? 'var(--blue)' : 'var(--border)', background: filter === f ? 'rgba(26,47,212,0.08)' : 'transparent', color: filter === f ? 'var(--blue)' : 'var(--muted)', cursor: 'pointer', textTransform: 'capitalize' }}>
               {f} {f === 'pending' && pendingCount > 0 && <span style={{ background: 'var(--warning)', color: '#fff', borderRadius: '50px', padding: '0 5px', fontSize: '0.68rem', marginLeft: '2px' }}>{pendingCount}</span>}
             </button>
           ))}
@@ -104,15 +104,15 @@ export default function AdminSellers() {
               <div key={s.id} className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                   <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                    <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'var(--green-soft)', border: '1px solid rgba(0,168,120,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--green)', fontSize: '1rem', flexShrink: 0 }}>
+                    <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'rgba(26,47,212,0.08)', border: '1px solid rgba(0,168,120,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--blue)', fontSize: '1rem', flexShrink: 0 }}>
                       {s.fullName?.[0]}
                     </div>
                     <div>
                       <div style={{ fontWeight: 700, marginBottom: '0.15rem' }}>{s.fullName}</div>
                       <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '0.3rem' }}>{s.email}</div>
                       <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                        <span className={`badge ${s.status === 'approved' ? 'badge-green' : s.status === 'pending' ? 'badge-yellow' : 'badge-red'}`}>{s.status}</span>
-                        <span className={`badge ${s.plan === 'premium' ? 'badge-green' : 'badge-gray'}`}>{s.plan}</span>
+                        <span className={`badge ${s.status === 'approved' ? 'badge-teal' : s.status === 'pending' ? 'badge-yellow' : 'badge-red'}`}>{s.status}</span>
+                        <span className={`badge ${s.plan === 'premium' ? 'badge-teal' : 'badge-gray'}`}>{s.plan}</span>
                         <span className="badge badge-gray">{s.productType}</span>
                       </div>
                     </div>
@@ -143,7 +143,7 @@ export default function AdminSellers() {
               {[
                 ['Full Name', selected.fullName],
                 ['Store Name', selected.storeName],
-                ['Store URL', `venda.app/store/${selected.storeSlug}`],
+                ['Store URL', `dimpa.app/store/${selected.storeSlug}`],
                 ['Email', selected.email],
                 ['Product Type', selected.productType],
                 ['Plan', selected.plan],

@@ -55,11 +55,11 @@ export default function Store() {
       {/* Sticky Nav */}
       <div style={{ background: theme === 'dark' ? 'rgba(10,10,10,0.95)' : 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)', padding: '0 5%', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
         <Link to="/marketplace" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.1rem', color: 'var(--text)', textDecoration: 'none' }}>
-          Ven<span style={{ color: 'var(--green)' }}>da</span>
+          Ven<span style={{ color: 'var(--blue)' }}>da</span>
         </Link>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
           {store.whatsapp && (
-            <a href={`https://wa.me/${store.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.82rem', color: 'var(--green)', fontWeight: 600, textDecoration: 'none' }}>💬 Chat</a>
+            <a href={`https://wa.me/${store.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.82rem', color: 'var(--blue)', fontWeight: 600, textDecoration: 'none' }}>💬 Chat</a>
           )}
           <button onClick={toggleTheme} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: '50px', padding: '0.3rem 0.8rem', fontSize: '0.78rem', color: 'var(--text)', cursor: 'pointer' }}>
             {theme === 'light' ? '🌙' : '☀️'}
@@ -147,7 +147,7 @@ export default function Store() {
           </div>
           <div style={{ display: 'flex', gap: '0.4rem' }}>
             {[['all','All'], ['physical','📦'], ['digital','💻']].map(([val, label]) => (
-              <button key={val} onClick={() => setFilter(val)} style={{ padding: '0.5rem 0.9rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, border: '1.5px solid', borderColor: filter === val ? 'var(--green)' : 'var(--border)', background: filter === val ? 'var(--green-soft)' : 'var(--card)', color: filter === val ? 'var(--green)' : 'var(--muted)', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <button key={val} onClick={() => setFilter(val)} style={{ padding: '0.5rem 0.9rem', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 600, border: '1.5px solid', borderColor: filter === val ? 'var(--blue)' : 'var(--border)', background: filter === val ? 'rgba(26,47,212,0.08)' : 'var(--card)', color: filter === val ? 'var(--blue)' : 'var(--muted)', cursor: 'pointer', transition: 'all 0.2s' }}>
                 {label}
               </button>
             ))}
@@ -164,7 +164,7 @@ export default function Store() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr))', gap: '1rem' }}>
             {filtered.map(p => (
               <div key={p.id} style={{ background: 'var(--card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', transition: 'all 0.22s', cursor: 'pointer' }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--green)' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--blue)' }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)' }}>
                 {/* Image */}
                 {p.imageUrl ? (
@@ -175,13 +175,13 @@ export default function Store() {
                   </div>
                 )}
                 <div style={{ padding: '0.9rem' }}>
-                  <span style={{ fontSize: '0.65rem', fontWeight: 700, padding: '0.18rem 0.5rem', borderRadius: '4px', background: 'var(--green-soft)', color: 'var(--green)', border: '1px solid rgba(0,168,120,0.2)', marginBottom: '0.5rem', display: 'inline-block' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 700, padding: '0.18rem 0.5rem', borderRadius: '4px', background: 'rgba(26,47,212,0.08)', color: 'var(--blue)', border: '1px solid rgba(0,168,120,0.2)', marginBottom: '0.5rem', display: 'inline-block' }}>
                     {p.type === 'digital' ? '💻 Digital' : '📦 Physical'}
                   </span>
                   <div style={{ fontWeight: 700, marginBottom: '0.25rem', fontFamily: 'var(--font-display)', fontSize: '0.9rem', lineHeight: 1.3 }}>{p.name}</div>
                   {p.description && <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: '0.7rem', lineHeight: 1.45 }}>{p.description?.slice(0, 55)}{p.description?.length > 55 ? '...' : ''}</div>}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--green)', fontSize: '1rem' }}>₦{p.price?.toLocaleString()}</div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--blue)', fontSize: '1rem' }}>₦{p.price?.toLocaleString()}</div>
                     <Link to={`/checkout/${storeSlug}/${p.id}`} className="btn-primary" style={{ padding: '0.35rem 0.85rem', fontSize: '0.76rem', borderRadius: '7px' }}>Buy</Link>
                   </div>
                 </div>
@@ -192,7 +192,7 @@ export default function Store() {
 
         <div style={{ textAlign: 'center', marginTop: '3rem', padding: '1.5rem 0', borderTop: '1px solid var(--border)' }}>
           <p style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>
-            Powered by <Link to="/" style={{ color: 'var(--green)', fontWeight: 600 }}>Venda</Link> · Real sellers. Real products. · <Link to="/dispute" style={{ color: 'var(--muted)' }}>Report an issue</Link>
+            Powered by <Link to="/" style={{ color: 'var(--blue)', fontWeight: 600 }}>Dimpa</Link> · Real sellers. Real products. · <Link to="/dispute" style={{ color: 'var(--muted)' }}>Report an issue</Link>
           </p>
         </div>
       </div>

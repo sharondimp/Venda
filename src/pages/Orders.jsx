@@ -78,10 +78,10 @@ export default function Orders() {
         </div>
 
         {completedOrders > 0 && (
-          <div style={{ background: 'var(--green-soft)', border: '1px solid rgba(0,168,120,0.2)', borderRadius: '10px', padding: '0.9rem 1.2rem', marginBottom: '1.5rem', fontSize: '0.82rem', color: 'var(--light)' }}>
+          <div style={{ background: 'rgba(26,47,212,0.08)', border: '1px solid rgba(0,168,120,0.2)', borderRadius: '10px', padding: '0.9rem 1.2rem', marginBottom: '1.5rem', fontSize: '0.82rem', color: 'var(--light)' }}>
             💰 <strong>Payout info:</strong> {completedOrders < 20
               ? `Complete ${20 - completedOrders} more order${20 - completedOrders !== 1 ? 's' : ''} to unlock 30% upfront payouts.`
-              : '🎉 You qualify for 30% upfront payouts! Contact Venda support to set it up.'}
+              : '🎉 You qualify for 30% upfront payouts! Contact Dimpa support to set it up.'}
           </div>
         )}
 
@@ -91,7 +91,7 @@ export default function Orders() {
 
         <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
           {['all', 'pending', 'shipped', 'delivered', 'physical', 'digital'].map(f => (
-            <button key={f} onClick={() => setFilter(f)} style={{ padding: '0.4rem 0.9rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 600, border: '1.5px solid', borderColor: filter === f ? 'var(--green)' : 'var(--border)', background: filter === f ? 'var(--green-soft)' : 'transparent', color: filter === f ? 'var(--green)' : 'var(--muted)', cursor: 'pointer', textTransform: 'capitalize' }}>
+            <button key={f} onClick={() => setFilter(f)} style={{ padding: '0.4rem 0.9rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 600, border: '1.5px solid', borderColor: filter === f ? 'var(--blue)' : 'var(--border)', background: filter === f ? 'rgba(26,47,212,0.08)' : 'transparent', color: filter === f ? 'var(--blue)' : 'var(--muted)', cursor: 'pointer', textTransform: 'capitalize' }}>
               {f}
             </button>
           ))}
@@ -126,8 +126,8 @@ export default function Orders() {
                       </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
-                      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--green)', fontSize: '1rem' }}>₦{o.amount?.toLocaleString()}</div>
-                      <span className={`badge ${o.status === 'delivered' ? 'badge-green' : o.status === 'shipped' ? 'badge-green' : 'badge-yellow'}`}>{o.status}</span>
+                      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--blue)', fontSize: '1rem' }}>₦{o.amount?.toLocaleString()}</div>
+                      <span className={`badge ${o.status === 'delivered' ? 'badge-teal' : o.status === 'shipped' ? 'badge-teal' : 'badge-yellow'}`}>{o.status}</span>
                     </div>
                   </div>
                   {o.status === 'pending' && o.type === 'physical' && (
@@ -185,7 +185,7 @@ export default function Orders() {
                 <div style={{ marginTop: '1.2rem', padding: '1rem', background: 'var(--bg2)', borderRadius: '10px', border: '1px solid var(--border)' }}>
                   <div style={{ fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.75rem' }}>📸 Upload shipping photo before dispatch</div>
                   <div style={{ border: '2px dashed var(--border)', borderRadius: '8px', padding: '1rem', textAlign: 'center', cursor: 'pointer', marginBottom: '0.75rem' }} onClick={() => document.getElementById('shipping-photo').click()}>
-                    {shippingPhoto ? <div style={{ color: 'var(--green)', fontSize: '0.85rem', fontWeight: 600 }}>✓ {shippingPhoto.name}</div> : <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>Tap to upload photo</div>}
+                    {shippingPhoto ? <div style={{ color: 'var(--blue)', fontSize: '0.85rem', fontWeight: 600 }}>✓ {shippingPhoto.name}</div> : <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>Tap to upload photo</div>}
                   </div>
                   <input id="shipping-photo" type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setShippingPhoto(e.target.files[0])} />
                   <button onClick={() => uploadShippingPhotoAndMark(selected.id)} className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={uploadingPhoto || !shippingPhoto}>

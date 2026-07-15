@@ -77,7 +77,7 @@ export default function Admin() {
             ['sponsored', `⭐ Featured ${pendingAds > 0 ? `(${pendingAds})` : ''}`],
             ['disputes', `🚨 Disputes ${pendingDisputes > 0 ? `(${pendingDisputes})` : ''}`],
           ].map(([t, l]) => (
-            <button key={t} onClick={() => setTab(t)} style={{ padding: '0.6rem 1.2rem', fontWeight: 600, fontSize: '0.85rem', background: 'none', border: 'none', cursor: 'pointer', color: tab === t ? 'var(--green)' : 'var(--muted)', borderBottom: tab === t ? '2px solid var(--green)' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
+            <button key={t} onClick={() => setTab(t)} style={{ padding: '0.6rem 1.2rem', fontWeight: 600, fontSize: '0.85rem', background: 'none', border: 'none', cursor: 'pointer', color: tab === t ? 'var(--blue)' : 'var(--muted)', borderBottom: tab === t ? '2px solid var(--blue)' : '2px solid transparent', marginBottom: '-1px', whiteSpace: 'nowrap' }}>
               {l}
             </button>
           ))}
@@ -90,13 +90,13 @@ export default function Admin() {
               {[
                 { label: 'Total Sellers', value: loading ? '...' : stats.totalSellers, icon: '👥' },
                 { label: 'Pending NIN', value: loading ? '...' : stats.pendingVerification, icon: '⏳', color: 'var(--warning)' },
-                { label: 'Premium', value: loading ? '...' : stats.premiumSellers, icon: '⭐', color: 'var(--green)' },
+                { label: 'Premium', value: loading ? '...' : stats.premiumSellers, icon: '⭐', color: 'var(--blue)' },
                 { label: 'Total Orders', value: loading ? '...' : stats.totalOrders, icon: '🛍️' },
                 { label: 'Pending Ads', value: loading ? '...' : pendingAds, icon: '📢', color: pendingAds > 0 ? 'var(--warning)' : 'var(--text)' },
               ].map(s => (
                 <div key={s.label} className="card">
                   <div style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>{s.icon}</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 800, color: s.color || 'var(--green)', lineHeight: 1, marginBottom: '0.3rem' }}>{s.value}</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 800, color: s.color || 'var(--blue)', lineHeight: 1, marginBottom: '0.3rem' }}>{s.value}</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>{s.label}</div>
                 </div>
               ))}
@@ -135,7 +135,7 @@ export default function Admin() {
             <div className="card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem' }}>
                 <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700 }}>Recent Sellers</div>
-                <Link to="/admin/sellers" style={{ fontSize: '0.82rem', color: 'var(--green)', fontWeight: 600 }}>View all →</Link>
+                <Link to="/admin/sellers" style={{ fontSize: '0.82rem', color: 'var(--blue)', fontWeight: 600 }}>View all →</Link>
               </div>
               {loading ? (
                 <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--muted)' }}>Loading...</div>
@@ -159,8 +159,8 @@ export default function Admin() {
                             <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{s.email}</div>
                           </td>
                           <td style={{ padding: '0.75rem 0.8rem' }}>{s.storeName}</td>
-                          <td style={{ padding: '0.75rem 0.8rem' }}><span className={`badge ${s.plan === 'premium' ? 'badge-green' : 'badge-gray'}`}>{s.plan}</span></td>
-                          <td style={{ padding: '0.75rem 0.8rem' }}><span className={`badge ${s.status === 'approved' ? 'badge-green' : s.status === 'pending' ? 'badge-yellow' : 'badge-red'}`}>{s.status}</span></td>
+                          <td style={{ padding: '0.75rem 0.8rem' }}><span className={`badge ${s.plan === 'premium' ? 'badge-teal' : 'badge-gray'}`}>{s.plan}</span></td>
+                          <td style={{ padding: '0.75rem 0.8rem' }}><span className={`badge ${s.status === 'approved' ? 'badge-teal' : s.status === 'pending' ? 'badge-yellow' : 'badge-red'}`}>{s.status}</span></td>
                         </tr>
                       ))}
                     </tbody>
@@ -190,7 +190,7 @@ export default function Admin() {
                         <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '0.2rem' }}>{a.storeName} · 📅 {a.date}</div>
                         <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '0.4rem' }}>₦{a.amount?.toLocaleString()} paid · {a.sellerEmail}</div>
                         {a.note && <div style={{ fontSize: '0.78rem', color: 'var(--muted)', fontStyle: 'italic', marginBottom: '0.4rem' }}>"{a.note}"</div>}
-                        <span className={`badge ${a.status === 'approved' ? 'badge-green' : a.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{a.status}</span>
+                        <span className={`badge ${a.status === 'approved' ? 'badge-teal' : a.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{a.status}</span>
                       </div>
                       {a.status === 'pending' && (
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -226,10 +226,10 @@ export default function Admin() {
                         <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginBottom: '0.4rem' }}>Reason: {d.reason?.replace(/_/g, ' ')}</div>
                         <div style={{ fontSize: '0.85rem', marginBottom: '0.6rem' }}>{d.description}</div>
                         {d.photoUrl && (
-                          <a href={d.photoUrl} target="_blank" rel="noreferrer" style={{ fontSize: '0.78rem', color: 'var(--green)', fontWeight: 600 }}>📸 View Photo →</a>
+                          <a href={d.photoUrl} target="_blank" rel="noreferrer" style={{ fontSize: '0.78rem', color: 'var(--blue)', fontWeight: 600 }}>📸 View Photo →</a>
                         )}
                         <div style={{ marginTop: '0.5rem' }}>
-                          <span className={`badge ${d.status === 'resolved' ? 'badge-green' : d.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{d.status}</span>
+                          <span className={`badge ${d.status === 'resolved' ? 'badge-teal' : d.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{d.status}</span>
                         </div>
                       </div>
                       {d.status === 'pending' && (

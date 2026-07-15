@@ -136,9 +136,9 @@ export default function Products() {
         </div>
 
         {!isPremium && dataLoaded && (
-          <div style={{ background: 'var(--green-soft)', border: '1px solid rgba(0,168,120,0.2)', borderRadius: '10px', padding: '0.9rem 1.2rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <div style={{ background: 'rgba(26,47,212,0.08)', border: '1px solid rgba(0,168,120,0.2)', borderRadius: '10px', padding: '0.9rem 1.2rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
             <span style={{ fontSize: '0.875rem', color: 'var(--light)' }}>Free plan — {5 - activeProducts.length} slot{5 - activeProducts.length !== 1 ? 's' : ''} left</span>
-            <Link to="/dashboard/upgrade" style={{ fontSize: '0.82rem', color: 'var(--green)', fontWeight: 600 }}>Go Premium →</Link>
+            <Link to="/dashboard/upgrade" style={{ fontSize: '0.82rem', color: 'var(--blue)', fontWeight: 600 }}>Go Premium →</Link>
           </div>
         )}
 
@@ -165,11 +165,11 @@ export default function Products() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                   <div style={{ fontWeight: 700, fontFamily: 'var(--font-display)', fontSize: '0.95rem' }}>{p.name}</div>
                   <div style={{ display: 'flex', gap: '0.4rem' }}>
-                    <span className={`badge ${p.status === 'active' ? 'badge-green' : 'badge-gray'}`}>{p.status || 'active'}</span>
+                    <span className={`badge ${p.status === 'active' ? 'badge-teal' : 'badge-gray'}`}>{p.status || 'active'}</span>
                   </div>
                 </div>
                 <div style={{ fontSize: '0.68rem', color: 'var(--muted)', marginBottom: '0.3rem', textTransform: 'capitalize' }}>{p.type}</div>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--green)', marginBottom: '0.3rem' }}>₦{p.price?.toLocaleString()}</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--blue)', marginBottom: '0.3rem' }}>₦{p.price?.toLocaleString()}</div>
                 {p.type === 'physical' && <div style={{ fontSize: '0.78rem', color: 'var(--muted)', marginBottom: '0.8rem' }}>Stock: {p.stock ?? 0}</div>}
                 {p.type === 'digital' && <div style={{ fontSize: '0.78rem', color: 'var(--muted)', marginBottom: '0.8rem' }}>Digital download</div>}
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -219,7 +219,7 @@ export default function Products() {
               <div className="form-group">
                 <label className="form-label">Product Image</label>
                 <div style={{ border: '2px dashed var(--border)', borderRadius: '10px', padding: '1.2rem', textAlign: 'center', cursor: 'pointer', background: 'var(--bg2)' }} onClick={() => document.getElementById('product-img').click()}>
-                  {form.image ? <div style={{ color: 'var(--green)', fontWeight: 600, fontSize: '0.875rem' }}>✓ {form.image.name}</div> : <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>🖼 Tap to upload image</div>}
+                  {form.image ? <div style={{ color: 'var(--blue)', fontWeight: 600, fontSize: '0.875rem' }}>✓ {form.image.name}</div> : <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>🖼 Tap to upload image</div>}
                 </div>
                 <input id="product-img" type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setForm(f => ({ ...f, image: e.target.files[0] }))} />
               </div>

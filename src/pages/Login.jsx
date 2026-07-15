@@ -23,24 +23,12 @@ export default function Login() {
     try {
       const { user: firebaseUser } = await signInWithEmailAndPassword(auth, email, password)
       const docSnap = await getDoc(doc(db, 'sellers', firebaseUser.uid))
-      if (docSnap.exists()) {
-        const userData = docSnap.data()
-        if (userData.role === 'admin') {
-          navigate('/admin')
-        } else {
-          navigate('/dashboard')
-        }
-      } else {
-        navigate('/dashboard')
-      }
+      if (docSnap.exists() && docSnap.data().role === 'admin') navigate('/admin')
+      else navigate('/dashboard')
     } catch (err) {
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password') {
-        setError('Invalid email or password')
-      } else if (err.code === 'auth/user-not-found') {
-        setError('No account found with this email')
-      } else {
-        setError('Something went wrong. Please try again.')
-      }
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password') setError('Invalid email or password')
+      else if (err.code === 'auth/user-not-found') setError('No account found with this email')
+      else setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -54,11 +42,8 @@ export default function Login() {
       await sendPasswordResetEmail(auth, email)
       setSuccess('Password reset email sent! Check your inbox.')
     } catch (err) {
-      if (err.code === 'auth/user-not-found') {
-        setError('No account found with this email')
-      } else {
-        setError('Failed to send reset email. Try again.')
-      }
+      if (err.code === 'auth/user-not-found') setError('No account found with this email')
+      else setError('Failed to send reset email. Try again.')
     } finally {
       setResetting(false)
     }
@@ -71,12 +56,12 @@ export default function Login() {
         <div style={{ width: '100%', maxWidth: '420px' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.8rem', marginBottom: '0.3rem' }}>Welcome back</div>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Log in to your Venda seller account</p>
+            <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Log in to your Dimpa seller account</p>
           </div>
 
           <div className="card" style={{ padding: '2rem' }}>
             {error && <div style={{ background: 'rgba(229,62,62,0.08)', border: '1px solid rgba(229,62,62,0.2)', borderRadius: '8px', padding: '0.7rem 1rem', marginBottom: '1.2rem', color: 'var(--danger)', fontSize: '0.85rem' }}>{error}</div>}
-            {success && <div style={{ background: 'var(--green-soft)', border: '1px solid rgba(0,168,120,0.2)', borderRadius: '8px', padding: '0.7rem 1rem', marginBottom: '1.2rem', color: 'var(--green)', fontSize: '0.85rem' }}>{success}</div>}
+            {success && <div style={{ background: 'rgba(26,47,212,0.06)', border: '1px solid rgba(26,47,212,0.15)', borderRadius: '8px', padding: '0.7rem 1rem', marginBottom: '1.2rem', color: 'var(--blue)', fontSize: '0.85rem' }}>{success}</div>}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -93,7 +78,7 @@ export default function Login() {
                 </div>
               </div>
               <div style={{ textAlign: 'right', marginBottom: '1.2rem' }}>
-                <button type="button" onClick={handleForgotPassword} disabled={resetting} style={{ fontSize: '0.82rem', color: 'var(--green)', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>
+                <button type="button" onClick={handleForgotPassword} disabled={resetting} style={{ fontSize: '0.82rem', color: 'var(--blue)', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>
                   {resetting ? 'Sending...' : 'Forgot password?'}
                 </button>
               </div>
@@ -104,7 +89,7 @@ export default function Login() {
           </div>
 
           <p style={{ textAlign: 'center', marginTop: '1.2rem', fontSize: '0.875rem', color: 'var(--muted)' }}>
-            Don't have an account? <Link to="/register" style={{ color: 'var(--green)', fontWeight: 600 }}>Start selling</Link>
+            Don't have an account? <Link to="/register" style={{ color: 'var(--blue)', fontWeight: 600 }}>Start selling</Link>
           </p>
         </div>
       </div>
