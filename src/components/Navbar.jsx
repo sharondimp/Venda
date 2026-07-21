@@ -29,7 +29,6 @@ export default function Navbar({ variant = 'public' }) {
           {variant === 'public' && <>
             <a href="#how" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>How it works</a>
             <a href="#features" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Features</a>
-            <a href="#pricing" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Pricing</a>
           </>}
           {variant === 'dashboard' && <>
             <Link to="/dashboard" style={{ color: 'var(--muted)', fontSize: '0.875rem', fontWeight: 500, textDecoration: 'none' }}>Overview</Link>
@@ -63,7 +62,6 @@ export default function Navbar({ variant = 'public' }) {
           {variant === 'public' && <>
             <a href="#how" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>How it works</a>
             <a href="#features" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>Features</a>
-            <a href="#pricing" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>Pricing</a>
             {!user && <Link to="/login" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text)', fontWeight: 500, textDecoration: 'none' }}>Log in</Link>}
             {!user && <Link to="/register" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 0', borderBottom: '1px solid var(--border)', color: 'var(--blue)', fontWeight: 600, textDecoration: 'none' }}>Start Selling</Link>}
           </>}
